@@ -7,6 +7,7 @@ class CommentBucketBuilder extends React.Component {
       value: '',
       name: '',
       comments: ['De plus,', 'Pour la prochaine étape,', 'il', 'elle', '__name__ est encouragé à', '__name__ est encouragée à'],
+      customComments: [],
       result: '',
     };
 
@@ -15,6 +16,15 @@ class CommentBucketBuilder extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addToResult = this.addToResult.bind(this);
     this.updateResult = this.updateResult.bind(this);
+    this.remove = this.remove.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState(JSON.parse(window.localStorage.getItem('commentBuilderState')));
+  }
+
+  componentDidUpdate() {
+    window.localStorage.setItem('commentBuilderState', JSON.stringify(this.state));
   }
 
   handleChange(event) {
@@ -26,7 +36,7 @@ class CommentBucketBuilder extends React.Component {
 
     this.setState({
       value: '',
-      comments: this.state.comments.concat(this.state.value),
+      customComments: this.state.customComments.concat(this.state.value),
     });
   }
 
@@ -41,6 +51,12 @@ class CommentBucketBuilder extends React.Component {
   addToResult(comment) {
     this.setState({
       result: `${this.state.result} ${comment}`,
+    });
+  }
+
+  remove(comment) {
+    this.setState({
+      customComments: this.state.customComments.filter(c => c !== comment),
     });
   }
 
@@ -65,11 +81,29 @@ class CommentBucketBuilder extends React.Component {
         </form>
         {this.renderNewCommentForm()}
         <h3>Comments</h3>
-        <ul>
-          {this.state.comments.map((comment, i) => {
-            return <li key={comment}>{comment} <button onClick={() => this.addToResult(comment)}>add</button></li>;
-          })}
-        </ul>
+        <div className='comment-columns'>
+          <ul>
+            {this.state.comments.map((comment, i) => {
+              return (
+                <li key={comment}>
+                  {comment}{' '}
+                  <button onClick={() => this.addToResult(comment)}>add</button>
+                </li>
+              );
+            })}
+          </ul>
+          <ul>
+            {this.state.customComments.map((comment, i) => {
+              return (
+                <li key={comment}>
+                  {comment}{' '}
+                  <button onClick={() => this.addToResult(comment)}>add</button>
+                  <button onClick={() => this.remove(comment)}>delete</button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         <h3>Result</h3>
         <div className='result-container'>
           <textarea
