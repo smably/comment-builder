@@ -12,6 +12,7 @@ class CommentBucketBuilder extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addToResult = this.addToResult.bind(this);
+    this.updateResult = this.updateResult.bind(this);
   }
 
   handleChange(event) {
@@ -25,6 +26,10 @@ class CommentBucketBuilder extends React.Component {
       value: '',
       comments: this.state.comments.concat(this.state.value),
     });
+  }
+
+  updateResult(event) {
+    this.setState({ result: event.target.value });
   }
 
   addToResult(comment) {
@@ -49,7 +54,10 @@ class CommentBucketBuilder extends React.Component {
           })}
         </ul>
         <h3>Result</h3>
-        <textarea className='result-text' value={this.state.result}></textarea>
+        <div className='result-container'>
+          <textarea className='result-text' value={this.state.result} onChange={this.updateResult}></textarea><br />
+          <button onClick={() => this.setState({ result: '' })}>Reset</button>
+        </div>
       </div>
     );
   }
