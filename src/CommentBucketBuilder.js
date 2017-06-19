@@ -5,11 +5,13 @@ class CommentBucketBuilder extends React.Component {
     super(props);
     this.state = {
       value: '',
-      comments: [],
+      name: '',
+      comments: ['De plus,', 'Pour la prochaine étape,', 'il', 'elle', '__name__ est encouragé à', '__name__ est encouragée à'],
       result: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addToResult = this.addToResult.bind(this);
     this.updateResult = this.updateResult.bind(this);
@@ -28,6 +30,10 @@ class CommentBucketBuilder extends React.Component {
     });
   }
 
+  handleNameChange(event) {
+    this.setState({ name: event.target.value });
+  }
+
   updateResult(event) {
     this.setState({ result: event.target.value });
   }
@@ -38,15 +44,26 @@ class CommentBucketBuilder extends React.Component {
     });
   }
 
+  renderNewCommentForm() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Add comment: <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleNameSubmit}>
           <label>
-            Add comment: <input type="text" value={this.state.value} onChange={this.handleChange} />
+            Student name: <input type="text" value={this.state.name} onChange={this.handleNameChange} />
           </label>
-          <input type="submit" value="Submit" />
         </form>
+        {this.renderNewCommentForm()}
         <h3>Comments</h3>
         <ul>
           {this.state.comments.map((comment, i) => {
@@ -55,7 +72,11 @@ class CommentBucketBuilder extends React.Component {
         </ul>
         <h3>Result</h3>
         <div className='result-container'>
-          <textarea className='result-text' value={this.state.result} onChange={this.updateResult}></textarea><br />
+          <textarea
+            className='result-text'
+            value={this.state.result.replace('__name__', this.state.name)}
+            onChange={this.updateResult}
+          ></textarea><br />
           <button onClick={() => this.setState({ result: '' })}>Reset</button>
         </div>
       </div>
