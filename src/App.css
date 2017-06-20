@@ -31,6 +31,10 @@
   padding: 10px 40px;
 }
 
+.columns > .bigColumn {
+  flex: 2;
+}
+
 .import-text {
   width: 1200px;
   height: 480px;

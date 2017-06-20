@@ -6,7 +6,8 @@ class CommentBucketBuilder extends React.Component {
     this.state = {
       value: '',
       name: '',
-      comments: ['De plus,', 'Pour la prochaine étape,', 'il', 'elle', '__name__ est encouragé à', '__name__ est encouragée à'],
+      gender: '',
+      comments: ['__name__', 'De plus,', 'Pour la prochaine étape,', 'il', 'elle', '__name__ est encouragé à', '__name__ est encouragée à'],
       customComments: [],
       result: '',
     };
@@ -63,11 +64,13 @@ class CommentBucketBuilder extends React.Component {
 
   renderNewCommentForm() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className='bigColumn' onSubmit={this.handleSubmit}>
         <label>
           Add comment: <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button onClick={() => this.setState({ customComments: [] })}>Reset</button>
       </form>
     );
   }
@@ -99,17 +102,17 @@ class CommentBucketBuilder extends React.Component {
           <ul>
             {this.state.comments.map((comment, i) => {
               return (
-                <li key={comment}>
+                <li key={`comment-${comment}`}>
                   {comment}{' '}
                   <button onClick={() => this.addToResult(comment)}>add</button>
                 </li>
               );
             })}
           </ul>
-          <ul>
+          <ul className='bigColumn'>
             {this.state.customComments.map((comment, i) => {
               return (
-                <li key={comment}>
+                <li key={`customComment-${comment}`}>
                   {comment}{' '}
                   <button onClick={() => this.addToResult(comment)}>add</button>
                   <button onClick={() => this.remove(comment)}>delete</button>
