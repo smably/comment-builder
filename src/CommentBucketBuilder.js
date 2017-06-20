@@ -86,14 +86,16 @@ class CommentBucketBuilder extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleNameSubmit}>
-          <label>
-            Student name: <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-          </label>
-        </form>
-        {this.renderNewCommentForm()}
         <h3>Comments</h3>
-        <div className='comment-columns'>
+        <div className='columns'>
+          <form onSubmit={this.handleNameSubmit}>
+            <label>
+              Student name: <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+            </label>
+          </form>
+          {this.renderNewCommentForm()}
+        </div>
+        <div className='columns'>
           <ul>
             {this.state.comments.map((comment, i) => {
               return (

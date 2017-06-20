@@ -8,6 +8,7 @@
 
 .App-intro {
   font-size: large;
+  padding: 5px;
 }
 
 .container {
@@ -15,15 +16,15 @@
 }
 
 .result-text {
-  width: 500px;
-  height: 200px;
+  width: 1200px;
+  height: 160px;
 }
 
-.comment-columns {
+.columns {
   display: flex;
 }
 
-.comment-columns > ul {
+.columns > * {
   flex: 1;
   border: #ccc 1px solid;
   margin: 10px;
@@ -32,5 +33,5 @@
 
 .import-text {
   width: 1200px;
-  height: 600px;
+  height: 480px;
 }
