@@ -179,6 +179,10 @@ class CommentBucketBuilder extends React.Component {
                 );
               });
 
+              if (items.length == 0) {
+                return null;
+              }
+
               return (
                 <div key={category}>
                   {title}
