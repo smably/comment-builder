@@ -43,3 +43,11 @@
 li {
   line-height: 1.5;
 }
+
+.row {
+  display: flex;
+}
+
+.row > form {
+  flex: 1;
+}

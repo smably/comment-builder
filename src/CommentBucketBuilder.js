@@ -7,21 +7,26 @@ class CommentBucketBuilder extends React.Component {
     this.initialState = {
       value: '',
       name: '',
-      gender: '',
-      comments: ['__name__', 'De plus,', 'Pour la prochaine étape,', 'il', 'elle', '__name__ est encouragé à', '__name__ est encouragée à'],
+      newCategory: '',
+      categories: [],
+      comments: ['__name__', 'il', 'elle', 'De plus,', 'Pour la prochaine étape,', '__name__ est encouragé à', '__name__ est encouragée à'],
       customComments: [],
+      customCommentCategories: [],
       result: '',
     };
 
     this.state = this.initialState;
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCategorySubmit = this.handleCategorySubmit.bind(this);
     this.addToResult = this.addToResult.bind(this);
     this.updateResult = this.updateResult.bind(this);
     this.remove = this.remove.bind(this);
     this.import = this.import.bind(this);
+    this.move = this.move.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +41,10 @@ class CommentBucketBuilder extends React.Component {
     this.setState({ value: event.target.value });
   }
 
+  handleCategoryChange(event) {
+    this.setState({ newCategory: event.target.value });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
@@ -43,6 +52,17 @@ class CommentBucketBuilder extends React.Component {
       value: '',
       customComments: this.state.customComments.concat(this.state.value),
     });
+  }
+
+  handleCategorySubmit(event) {
+    event.preventDefault();
+
+    if (this.state.newCategory !== '') {
+      this.setState({
+        newCategory: '',
+        categories: this.state.categories.concat(this.state.newCategory),
+      });
+    }
   }
 
   edit(comment) {
@@ -55,6 +75,17 @@ class CommentBucketBuilder extends React.Component {
       customComments[commentIndex] = editedComment;
       this.setState({ customComments });
     }
+  }
+
+  move(comment, event) {
+    const category = event.target.value;
+    const customComments = this.state.customComments;
+    const commentIndex = customComments.indexOf(comment);
+    const customCommentCategories = this.state.customCommentCategories;
+
+    customCommentCategories[commentIndex] = category;
+
+    this.setState({ customCommentCategories });
   }
 
   handleNameChange(event) {
@@ -77,19 +108,6 @@ class CommentBucketBuilder extends React.Component {
     });
   }
 
-  renderNewCommentForm() {
-    return (
-      <form className='bigColumn' onSubmit={this.handleSubmit}>
-        <label>
-          Add comment: <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <button onClick={(event) => { this.setState(this.initialState); event.preventDefault(); }}>Reset</button>
-      </form>
-    );
-  }
-
   import() {
     const importText = document.getElementById('import').value;
     const importItems = importText.split(/\n+/).filter(i => i !== '');
@@ -106,12 +124,28 @@ class CommentBucketBuilder extends React.Component {
       <div>
         <h3>Comments</h3>
         <div className='columns'>
-          <form onSubmit={this.handleNameSubmit}>
-            <label>
-              Student name: <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-            </label>
-          </form>
-          {this.renderNewCommentForm()}
+          <div>
+            <form onSubmit={this.handleNameSubmit}>
+              <label>
+                Student name: <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+              </label>
+            </form>
+          </div>
+          <div className='bigColumn row'>
+            <form onSubmit={this.handleSubmit}>
+              <label>
+                Add comment: <input type="text" value={this.state.value} onChange={this.handleChange} />
+              </label>
+              <input type="submit" value="Submit" /><br />
+            </form>
+            <form onSubmit={this.handleCategorySubmit}>
+              <label>
+                Add category: <input type="text" value={this.state.newCategory} onChange={this.handleCategoryChange} />
+              </label>
+              <input type="submit" value="Submit" /><br />
+            </form>
+            <button onClick={(event) => { this.setState(this.initialState); event.preventDefault(); }}>Reset</button>
+          </div>
         </div>
         <div className='columns'>
           <ul>
@@ -125,11 +159,19 @@ class CommentBucketBuilder extends React.Component {
           </ul>
           <ul className='bigColumn'>
             {this.state.customComments.map((comment, i) => {
+              const commentCategory = this.state.customCommentCategories[this.state.customComments.indexOf(comment)] || 'Uncategorized';
+
               return (
                 <li key={`customComment-${comment}`}>
                   <a href="#addCustomComment" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>{' '}
                   <button onClick={() => this.remove(comment)}>delete</button>
                   <button onClick={() => this.edit(comment)}>edit</button>
+                  <select onChange={(event) => this.move(comment, event)} value={commentCategory}>
+                    <option value='Uncategorized'>Uncategorized</option>
+                    {this.state.categories.map(category => {
+                      return <option key={category} value={category}>{category}</option>;
+                    })}
+                  </select>
                 </li>
               );
             })}
