@@ -55,7 +55,7 @@ class CommentBucketBuilder extends React.Component {
 
   addToResult(comment) {
     this.setState({
-      result: `${this.state.result} ${comment}`,
+      result: `${this.state.result} ${comment.trim()}`,
     });
   }
 
@@ -80,7 +80,7 @@ class CommentBucketBuilder extends React.Component {
 
   import() {
     const importText = document.getElementById('import').value;
-    const importItems = importText.split(/\n+/).map(i => i.trim()).filter(i => i !== '');
+    const importItems = importText.split(/\n+/).filter(i => i !== '');
 
     this.setState({
       customComments: this.state.customComments.concat(importItems),
