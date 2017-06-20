@@ -196,7 +196,7 @@ class CommentBucketBuilder extends React.Component {
         <div className='container'>
           <textarea
             className='result-text'
-            value={this.state.result.replace(/__name__/g, this.state.name)}
+            value={this.state.result.replace(/__name__/g, this.state.name).trim()}
             onChange={this.updateResult}
           ></textarea><br />
           <button onClick={() => this.setState({ result: '' })}>Reset</button>
