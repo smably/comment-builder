@@ -45,6 +45,18 @@ class CommentBucketBuilder extends React.Component {
     });
   }
 
+  edit(comment) {
+    const customComments = this.state.customComments;
+    const commentIndex = customComments.indexOf(comment);
+
+    const editedComment = prompt("Edit comment", comment);
+
+    if (editedComment !== null) {
+      customComments[commentIndex] = editedComment;
+      this.setState({ customComments });
+    }
+  }
+
   handleNameChange(event) {
     this.setState({ name: event.target.value });
   }
@@ -117,6 +129,7 @@ class CommentBucketBuilder extends React.Component {
                 <li key={`customComment-${comment}`}>
                   <a href="#" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>{' '}
                   <button onClick={() => this.remove(comment)}>delete</button>
+                  <button onClick={() => this.edit(comment)}>edit</button>
                 </li>
               );
             })}
