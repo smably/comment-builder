@@ -3,7 +3,8 @@ import React from 'react';
 class CommentBucketBuilder extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+
+    this.initialState = {
       value: '',
       name: '',
       gender: '',
@@ -11,6 +12,8 @@ class CommentBucketBuilder extends React.Component {
       customComments: [],
       result: '',
     };
+
+    this.state = this.initialState;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -70,7 +73,7 @@ class CommentBucketBuilder extends React.Component {
         </label>
         <input type="submit" value="Submit" />
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <button onClick={() => this.setState({ customComments: [] })}>Reset</button>
+        <button onClick={() => this.setState(this.initialState)}>Reset</button>
       </form>
     );
   }
