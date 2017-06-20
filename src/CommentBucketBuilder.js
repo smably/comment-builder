@@ -157,25 +157,36 @@ class CommentBucketBuilder extends React.Component {
               );
             })}
           </ul>
-          <ul className='bigColumn'>
-            {this.state.customComments.map((comment, i) => {
-              const commentCategory = this.state.customCommentCategories[this.state.customComments.indexOf(comment)] || 'Uncategorized';
+          <div className='bigColumn'>
+            {['Uncategorized'].concat(this.state.categories).map(category => {
+              const title = <h3>{category}</h3>;
+
+              const items = this.state.customComments.filter((comment, i) => {
+                const commentCategory = this.state.customCommentCategories[this.state.customComments.indexOf(comment)] || 'Uncategorized';
+                return commentCategory === category;
+              }).map((comment) => {
+                const commentCategory = this.state.customCommentCategories[this.state.customComments.indexOf(comment)] || 'Uncategorized';
+                return (
+                  <li key={`customComment-${comment}`}>
+                    <a href="#addCustomComment" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>{' '}
+                    <button onClick={() => this.remove(comment)}>delete</button>
+                    <button onClick={() => this.edit(comment)}>edit</button>
+                    <select onChange={(event) => this.move(comment, event)} value={commentCategory}>
+                      <option value='Uncategorized'>Uncategorized</option>
+                      {this.state.categories.map(category => <option key={category} value={category}>{category}</option>)}
+                    </select>
+                  </li>
+                );
+              });
 
               return (
-                <li key={`customComment-${comment}`}>
-                  <a href="#addCustomComment" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>{' '}
-                  <button onClick={() => this.remove(comment)}>delete</button>
-                  <button onClick={() => this.edit(comment)}>edit</button>
-                  <select onChange={(event) => this.move(comment, event)} value={commentCategory}>
-                    <option value='Uncategorized'>Uncategorized</option>
-                    {this.state.categories.map(category => {
-                      return <option key={category} value={category}>{category}</option>;
-                    })}
-                  </select>
-                </li>
+                <div key={category}>
+                  {title}
+                  <ul>{items}</ul>
+                </div>
               );
             })}
-          </ul>
+          </div>
         </div>
         <h3>Result</h3>
         <div className='container'>
