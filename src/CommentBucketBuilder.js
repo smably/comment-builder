@@ -85,7 +85,7 @@ class CommentBucketBuilder extends React.Component {
         </label>
         <input type="submit" value="Submit" />
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <button onClick={() => this.setState(this.initialState)}>Reset</button>
+        <button onClick={(event) => { this.setState(this.initialState); event.preventDefault(); }}>Reset</button>
       </form>
     );
   }
@@ -118,7 +118,7 @@ class CommentBucketBuilder extends React.Component {
             {this.state.comments.map((comment, i) => {
               return (
                 <li key={`comment-${comment}`}>
-                  <a href="#" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>
+                  <a href="#addComment" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>
                 </li>
               );
             })}
@@ -127,7 +127,7 @@ class CommentBucketBuilder extends React.Component {
             {this.state.customComments.map((comment, i) => {
               return (
                 <li key={`customComment-${comment}`}>
-                  <a href="#" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>{' '}
+                  <a href="#addCustomComment" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>{' '}
                   <button onClick={() => this.remove(comment)}>delete</button>
                   <button onClick={() => this.edit(comment)}>edit</button>
                 </li>
