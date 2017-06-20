@@ -17,6 +17,7 @@ class CommentBucketBuilder extends React.Component {
     this.addToResult = this.addToResult.bind(this);
     this.updateResult = this.updateResult.bind(this);
     this.remove = this.remove.bind(this);
+    this.import = this.import.bind(this);
   }
 
   componentDidMount() {
@@ -71,6 +72,17 @@ class CommentBucketBuilder extends React.Component {
     );
   }
 
+  import() {
+    const importText = document.getElementById('import').value;
+    const importItems = importText.split(/\n+/).filter(i => i !== '');
+
+    this.setState({
+      customComments: this.state.customComments.concat(importItems),
+    });
+
+    document.getElementById('import').value = '';
+  }
+
   render() {
     return (
       <div>
@@ -105,13 +117,18 @@ class CommentBucketBuilder extends React.Component {
           </ul>
         </div>
         <h3>Result</h3>
-        <div className='result-container'>
+        <div className='container'>
           <textarea
             className='result-text'
             value={this.state.result.replace('__name__', this.state.name)}
             onChange={this.updateResult}
           ></textarea><br />
           <button onClick={() => this.setState({ result: '' })}>Reset</button>
+        </div>
+        <h3>Import</h3>
+        <div className='container'>
+          <textarea className='import-text' id='import'></textarea><br />
+          <button onClick={this.import}>Import</button>
         </div>
       </div>
     );
