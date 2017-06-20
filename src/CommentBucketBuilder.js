@@ -106,8 +106,7 @@ class CommentBucketBuilder extends React.Component {
             {this.state.comments.map((comment, i) => {
               return (
                 <li key={`comment-${comment}`}>
-                  {comment}{' '}
-                  <button onClick={() => this.addToResult(comment)}>add</button>
+                  <a href="#" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>
                 </li>
               );
             })}
@@ -116,8 +115,7 @@ class CommentBucketBuilder extends React.Component {
             {this.state.customComments.map((comment, i) => {
               return (
                 <li key={`customComment-${comment}`}>
-                  {comment}{' '}
-                  <button onClick={() => this.addToResult(comment)}>add</button>
+                  <a href="#" onClick={(event) => { this.addToResult(comment); event.preventDefault(); }}>{comment}</a>{' '}
                   <button onClick={() => this.remove(comment)}>delete</button>
                 </li>
               );

@@ -39,3 +39,7 @@
   width: 1200px;
   height: 480px;
 }
+
+li {
+  line-height: 1.5;
+}
